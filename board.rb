@@ -24,17 +24,17 @@ class Board
       color = :white if row_idx > 5
       case row_idx
       when 0, 7
-        self[[row_idx, 0]] = Rook.new(color)
-        self[[row_idx, 1]] = Knight.new(color)
-        self[[row_idx, 2]] = Bishop.new(color)
-        self[[row_idx, 3]] = King.new(color)
-        self[[row_idx, 4]] = Queen.new(color)
-        self[[row_idx, 5]] = Bishop.new(color)
-        self[[row_idx, 6]] = Knight.new(color)
-        self[[row_idx, 7]] = Rook.new(color)
+        self[[row_idx, 0]] = Rook.new([row_idx, 0], color, self)
+        self[[row_idx, 1]] = Knight.new([row_idx, 1], color, self)
+        self[[row_idx, 2]] = Bishop.new([row_idx, 2], color, self)
+        self[[row_idx, 3]] = King.new([row_idx, 3], color, self)
+        self[[row_idx, 4]] = Queen.new([row_idx, 4], color, self)
+        self[[row_idx, 5]] = Bishop.new([row_idx, 5], color, self)
+        self[[row_idx, 6]] = Knight.new([row_idx, 6], color, self)
+        self[[row_idx, 7]] = Rook.new([row_idx, 7], color, self)
       when 1, 6
         8.times do |i|
-          self[[row_idx, i]] = Pawn.new(color)
+          self[[row_idx, i]] = Pawn.new([row_idx, i], color, self)
         end
       else
         8.times do |i|
