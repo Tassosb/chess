@@ -1,21 +1,21 @@
 require_relative 'piece'
 
 class Board
-  attr_reader :board
+  attr_reader :grid
 
   def initialize
-    @board = Array.new(8) { Array.new(8) }
+    @grid = Array.new(8) { Array.new(8) }
     setup_pieces
   end
 
   def [](pos)
     row, col = pos
-    @board[row][col]
+    @grid[row][col]
   end
 
   def []=(pos, mark)
     row, col = pos
-    @board[row][col] = mark
+    @grid[row][col] = mark
   end
 
   def setup_pieces
@@ -33,11 +33,11 @@ class Board
         self[[row_idx, 6]] = Knight.new(color)
         self[[row_idx, 7]] = Rook.new(color)
       when 1, 6
-        7.times do |i|
+        8.times do |i|
           self[[row_idx, i]] = Pawn.new(color)
         end
       else
-        7.times do |i|
+        8.times do |i|
           self[[row_idx, i]] = NullPiece.new
         end
       end
@@ -55,6 +55,10 @@ class Board
 
     self[end_pos] = self[start_pos]
     self[start_pos] = NullPiece.new
+  end
+
+  def in_bounds?(pos)
+    pos.all? { |x| x.between?(0, 7) }
   end
 end
 
