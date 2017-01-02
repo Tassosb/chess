@@ -1,12 +1,17 @@
+require_relative 'sliding_piece'
+require 'byebug'
+
 class Piece
   attr_reader :color, :pos, :board
 
   def initialize(pos, color, board)
-    @pos = pos, @color = color, @board = board
+    @pos, @color, @board = pos, color, board
   end
 end
 
 class Rook < Piece
+  include SlidingPiece
+
 
   def to_s
     color == :white ? " \u2656 " : " \u265c "
@@ -20,6 +25,8 @@ class Knight < Piece
 end
 
 class Bishop < Piece
+  include SlidingPiece
+
   def to_s
     color == :white ? " \u2657 " : " \u265d "
   end
@@ -32,6 +39,8 @@ class King < Piece
 end
 
 class Queen < Piece
+  include SlidingPiece
+
   def to_s
     color == :white ? " \u2655 " : " \u265b "
   end

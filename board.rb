@@ -63,3 +63,5 @@ class Board
 end
 
 board = Board.new
+rook = Rook.new([2, 0], :black, board)
+bishop = Bishop.new([2, 0], :black, board)
