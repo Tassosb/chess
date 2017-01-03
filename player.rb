@@ -14,6 +14,10 @@ end
 class HumanPlayer < Player
 
   def play_turn
+    [get_start_input, get_end_input]
+  end
+
+  def get_start_input
     start_input = nil
 
     until start_input
@@ -22,10 +26,14 @@ class HumanPlayer < Player
       start_input = display.cursor.get_input
     end
 
-    unless display.board[start_input].color == color
+    unless display.board.matches_color?(start_input, color)
       raise InvalidMoveError, "Not your piece!"
     end
 
+    start_input
+  end
+
+  def get_end_input
     end_input = nil
 
     until end_input
@@ -33,6 +41,6 @@ class HumanPlayer < Player
       end_input = display.cursor.get_input
     end
 
-    [start_input, end_input]
+  end_input
   end
 end

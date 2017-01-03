@@ -18,26 +18,28 @@ class Game
   def play
 
     until board.checkmate?(current_player.color)
-
-      begin
-        start_input, end_input = current_player.play_turn
-
-        if board[start_input].move_into_check?(end_input)
-          raise InvalidMoveError, "You are in check."
-        end
-
-        board.move_piece(start_input, end_input)
-      rescue InvalidMoveError => e
-        puts e.message
-        sleep(1)
-        retry
-      end
-
+      take_turn
       switch_players!
     end
 
     display.render
     puts "#{opposing_player.name} wins!"
+  end
+
+  def take_turn
+    begin
+      start_input, end_input = current_player.play_turn
+
+      if board[start_input].move_into_check?(end_input)
+        raise InvalidMoveError, "You are in check."
+      end
+
+      board.move_piece(start_input, end_input)
+    rescue InvalidMoveError => e
+      puts e.message
+      sleep(1)
+      retry
+    end
   end
 
   def opposing_player
