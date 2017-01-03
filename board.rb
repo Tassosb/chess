@@ -1,15 +1,14 @@
 require_relative 'piece'
+require_relative 'errors'
 require 'byebug'
 
 class Board
   attr_reader :grid
 
-  def initialize(grid = nil)
-    if grid == nil
-      @grid = Array.new(8) { Array.new(8) }
+  def initialize(should_setup = true)
+    @grid = Array.new(8) { Array.new(8) }
+    if should_setup
       setup_pieces
-    else
-      @grid = grid
     end
   end
 
@@ -47,6 +46,12 @@ class Board
         end
       end
     end
+  end
+
+  def move_piece!(start_pos, end_pos)
+    self[end_pos] = self[start_pos]
+    self[start_pos] = NullPiece.instance
+    self[end_pos].update_pos(end_pos)
   end
 
   def move_piece(start_pos, end_pos)
@@ -93,51 +98,34 @@ class Board
   def checkmate?(color)
     return false unless in_check?(color)
 
-    grid.any? do |row|
-      row.any? do |piece|
-
-        next if piece.color != color || piece.is_a?(NullPiece)
-        !piece.valid_moves.empty?
-      end
+    grid.flatten.none? do |piece|
+      piece.color == color && piece.valid_moves.count > 0
     end
   end
 
   def dup
-    duped_grid = Board.dup_arr(grid)
+    duped_board = Board.new(false)
 
-    duped_board = Board.new(duped_grid)
 
-    duped_board.grid.each do |row|
-      row.each do |piece|
-        piece.update_board(duped_board)
+    grid.each_with_index do |row, i|
+      row.each_with_index do |piece, j|
+        new_pos = [i, j]
+        new_piece = if piece.is_a?(NullPiece)
+                      piece
+                    else
+                      piece.class.new(piece.pos, piece.color, duped_board)
+                    end
+
+        duped_board[new_pos] = new_piece
       end
     end
-    # debugger
+
     duped_board
   end
-
-  def self.dup_arr(array)
-    array.map do | el|
-      if el.is_a?(Array)
-        Board.dup_arr(el)
-      else
-        el.is_a?(NullPiece) ? el : el.dup
-      end
-    end
-  end
-
 end
 
-class MissingKingError < StandardError
-end
-
-class InvalidMoveError < StandardError
-end
-
-board = Board.new
+# board = Board.new()
 # duped_board = board.dup
-# p duped_board.class
-# duped_board.move_piece([1,0], [2,0])
-# p duped_board[[0,0]].class
-# p board[[1,0]].to_s
-# p duped_board[[1,0]].to_s
+# # duped_board[[0,0]] = "CHANGED"
+# puts duped_board.object_id == board.object_id
+# puts duped_board[[0,1]].object_id == board[[0,1]].object_id
