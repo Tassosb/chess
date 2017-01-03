@@ -1,11 +1,16 @@
 require_relative 'piece'
+require 'byebug'
 
 class Board
   attr_reader :grid
 
-  def initialize
-    @grid = Array.new(8) { Array.new(8) }
-    setup_pieces
+  def initialize(grid = nil)
+    if grid == nil
+      @grid = Array.new(8) { Array.new(8) }
+      setup_pieces
+    else
+      @grid = grid
+    end
   end
 
   def [](pos)
@@ -27,8 +32,8 @@ class Board
         self[[row_idx, 0]] = Rook.new([row_idx, 0], color, self)
         self[[row_idx, 1]] = Knight.new([row_idx, 1], color, self)
         self[[row_idx, 2]] = Bishop.new([row_idx, 2], color, self)
-        self[[row_idx, 3]] = King.new([row_idx, 3], color, self)
-        self[[row_idx, 4]] = Queen.new([row_idx, 4], color, self)
+        self[[row_idx, 3]] = Queen.new([row_idx, 3], color, self)
+        self[[row_idx, 4]] = King.new([row_idx, 4], color, self)
         self[[row_idx, 5]] = Bishop.new([row_idx, 5], color, self)
         self[[row_idx, 6]] = Knight.new([row_idx, 6], color, self)
         self[[row_idx, 7]] = Rook.new([row_idx, 7], color, self)
@@ -63,10 +68,76 @@ class Board
   def in_bounds?(pos)
     pos.all? { |x| x.between?(0, 7) }
   end
+
+  def in_check?(color)
+    grid.any? do |row|
+      row.any? do |piece|
+        next if piece.color == color || piece.is_a?(NullPiece)
+        piece.moves.include?(find_king_pos(color))
+      end
+    end
+  end
+
+  def find_king_pos(color)
+    grid.each_with_index do |row, row_idx|
+      row.each_with_index do |piece, col_idx|
+        if piece.is_a?(King) && piece.color == color
+          return [row_idx, col_idx]
+        end
+      end
+    end
+
+    raise MissingKingError, "The King has disappeared!"
+  end
+
+  def checkmate?(color)
+    return false unless in_check?(color)
+
+    grid.any? do |row|
+      row.any? do |piece|
+
+        next if piece.color != color || piece.is_a?(NullPiece)
+        !piece.valid_moves.empty?
+      end
+    end
+  end
+
+  def dup
+    duped_grid = Board.dup_arr(grid)
+
+    duped_board = Board.new(duped_grid)
+
+    duped_board.grid.each do |row|
+      row.each do |piece|
+        piece.update_board(duped_board)
+      end
+    end
+    # debugger
+    duped_board
+  end
+
+  def self.dup_arr(array)
+    array.map do | el|
+      if el.is_a?(Array)
+        Board.dup_arr(el)
+      else
+        el.is_a?(NullPiece) ? el : el.dup
+      end
+    end
+  end
+
+end
+
+class MissingKingError < StandardError
 end
 
 class InvalidMoveError < StandardError
 end
-# board = Board.new
-# rook = Rook.new([2, 0], :black, board)
-# bishop = Bishop.new([2, 0], :black, board)
+
+board = Board.new
+# duped_board = board.dup
+# p duped_board.class
+# duped_board.move_piece([1,0], [2,0])
+# p duped_board[[0,0]].class
+# p board[[1,0]].to_s
+# p duped_board[[1,0]].to_s
