@@ -13,6 +13,20 @@ class Piece
   def update_pos(new_pos)
     @pos = new_pos
   end
+
+  def update_board(new_board)
+    @board = new_board
+  end
+
+  def valid_moves
+    moves.reject { |end_pos| move_into_check?(end_pos) }
+  end
+
+  def move_into_check?(end_pos)
+    dup_board = board.dup
+    dup_board.move_piece(pos, end_pos)
+    dup_board.in_check?(color)
+  end
 end
 
 class Rook < Piece
