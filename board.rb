@@ -1,4 +1,4 @@
-require_relative 'piece'
+require_relative 'pieces/piece_types'
 require_relative 'errors'
 require 'byebug'
 
