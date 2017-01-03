@@ -15,7 +15,6 @@ class Display
     system("clear")
     formatted_board.each do |row|
       puts row.join('')
-      # puts '-------------------------------'
     end
   end
 
@@ -42,17 +41,17 @@ class Display
     display
   end
 
-  def test_render
-    while true
-      render
-      @cursor.get_input
-    end
-  end
+  # def test_render
+  #   while true
+  #     render
+  #     @cursor.get_input
+  #   end
+  # end
 end
-
-board = Board.new
-Display.new(board).test_render
-
+#
+# board = Board.new
+# # Display.new(board).test_render
+#
 
 
 # "dsfsf".colorize(:blue)
