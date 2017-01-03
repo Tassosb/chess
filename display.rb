@@ -13,9 +13,10 @@ class Display
 
   def render
     system("clear")
-    formatted_board.each do |row|
-      puts row.join('')
+    formatted_board.each_with_index do |row, idx|
+      puts "#{8 - idx} #{row.join('')}"
     end
+    puts "   #{('a'..'h').to_a.join('  ')}"
   end
 
   def cursor_pos
@@ -30,29 +31,14 @@ class Display
         pos = [row_i, col_i]
         if pos == cursor_pos
           display[row_i][col_i] << board[pos].to_s.colorize(:background => :blue)
-        elsif (row_i + col_i).even?
+        elsif (row_i + col_i).odd?
           display[row_i][col_i] << board[pos].to_s.colorize(:background => :white)
         else
-          display[row_i][col_i] << board[pos].to_s
+          display[row_i][col_i] << board[pos].to_s.colorize(:background => :grey)
         end
       end
     end
 
     display
   end
-
-  # def test_render
-  #   while true
-  #     render
-  #     @cursor.get_input
-  #   end
-  # end
 end
-#
-# board = Board.new
-# # Display.new(board).test_render
-#
-
-
-# "dsfsf".colorize(:blue)
-# "sdgds".blue
