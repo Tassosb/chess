@@ -1,6 +1,6 @@
 require_relative 'display'
 require_relative 'board'
-#require_relative 'player' -- Do not have player class yet
+require_relative 'player' 
 require 'byebug'
 
 class Game
@@ -12,7 +12,7 @@ class Game
   end
 
   def play
-    while true
+    until board.checkmate?(:white)
       display.render
       start_input = display.cursor.get_input
 
@@ -39,9 +39,15 @@ end
 
 
 game = Game.new
-game.board[[2,2]] = Bishop.new([2,2], :black, game.board)
-game.board[[2,3]] = Queen.new([2,3], :black, game.board)
-game.board[[3,3]] = King.new([3,3], :black, game.board)
-game.board[[5,4]] = Pawn.new([5,4], :black, game.board)
+# p game.board[[4,4]].color
+# game.board[[0,3]] = Bishop.new([2,2], :black, game.board)
+# game.board[[2,3]] = Queen.new([2,3], :black, game.board)
+# game.board[[3,3]] = King.new([3,3], :black, game.board)
+# game.board[[4,4]] = Pawn.new([4,4], :white, game.board)
+# game.display.render
+# puts game.board.in_check?(:black)
+
+
+# p duped_board
 
 game.play
