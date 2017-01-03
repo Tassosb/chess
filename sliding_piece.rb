@@ -1,7 +1,7 @@
 module SlidingPiece
   def moves(available_dirs)
     possible_moves = []
-
+    # debugger
     deltas = move_dirs(available_dirs)
 
     deltas.each do |delta|
@@ -12,11 +12,12 @@ module SlidingPiece
         possible_moves << new_pos
         new_pos = [new_pos[0] + d_x, new_pos[1] + d_y]
       end
+
+      if board.in_bounds?(new_pos) && board[new_pos].color != self.color
+        possible_moves << new_pos
+      end
     end
-    #
-    # if board.in_bounds?(new_pos)
-    #   possible_moves << new_pos
-    # end
+  
     possible_moves
   end
 
