@@ -38,23 +38,26 @@ class Board
         end
       else
         8.times do |i|
-          self[[row_idx, i]] = NullPiece.new
+          self[[row_idx, i]] = NullPiece.instance
         end
       end
     end
   end
 
   def move_piece(start_pos, end_pos)
+    start_piece = self[start_pos]
+
     if self[start_pos].is_a?(NullPiece)
-      raise "There is no piece to move"
+      raise InvalidMoveError, "There is no piece to move"
     end
 
-    unless self[end_pos].is_a?(NullPiece)
-      raise "Space is already occupied"
+    if start_piece.moves.include?(end_pos)
+      self[end_pos] = self[start_pos]
+      self[start_pos] = NullPiece.instance
+      self[end_pos].update_pos(end_pos)
+    else
+      raise InvalidMoveError, "This piece cannot move that way"
     end
-
-    self[end_pos] = self[start_pos]
-    self[start_pos] = NullPiece.new
   end
 
   def in_bounds?(pos)
@@ -62,6 +65,8 @@ class Board
   end
 end
 
-board = Board.new
-rook = Rook.new([2, 0], :black, board)
-bishop = Bishop.new([2, 0], :black, board)
+class InvalidMoveError < StandardError
+end
+# board = Board.new
+# rook = Rook.new([2, 0], :black, board)
+# bishop = Bishop.new([2, 0], :black, board)
