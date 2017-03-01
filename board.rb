@@ -7,9 +7,7 @@ class Board
 
   def initialize(should_setup = true)
     @grid = Array.new(8) { Array.new(8) }
-    if should_setup
-      setup_pieces
-    end
+    setup_pieces if should_setup
   end
 
   def [](pos)
@@ -35,10 +33,8 @@ class Board
       raise InvalidMoveError, "There is no piece to move"
     end
 
-    if start_piece.moves.include?(end_pos)
-      self[end_pos] = self[start_pos]
-      self[start_pos] = NullPiece.instance
-      self[end_pos].update_pos(end_pos)
+    if start_piece.has_move?(end_pos)
+      move_piece!(start_pos, end_pos)
     else
       raise InvalidMoveError, "This piece cannot move that way"
     end
@@ -49,11 +45,9 @@ class Board
   end
 
   def in_check?(color)
-    grid.any? do |row|
-      row.any? do |piece|
-        next if piece.color == color || piece.is_a?(NullPiece)
-        piece.moves.include?(find_king_pos(color))
-      end
+    grid.flatten.any? do |piece|
+      next if piece.color == color || piece.is_a?(NullPiece)
+      piece.has_move?(find_king_pos(color))
     end
   end
 
@@ -67,7 +61,6 @@ class Board
 
   def dup
     duped_board = Board.new(false)
-
 
     grid.each_with_index do |row, i|
       row.each_with_index do |piece, j|

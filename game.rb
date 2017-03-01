@@ -16,7 +16,6 @@ class Game
   end
 
   def play
-
     until board.checkmate?(current_player.color)
       take_turn
       switch_players!
@@ -51,6 +50,13 @@ class Game
   end
 end
 
+if __FILE__ == $PROGRAM_NAME
+  puts "Enter Player 1 name"
+  player1_name = gets.chomp
 
-game = Game.new("Nael", "Tassos")
-game.play
+  puts "Enter Player 2 name"
+  player2_name = gets.chomp
+
+  game = Game.new(player1_name, player2_name)
+  game.play
+end

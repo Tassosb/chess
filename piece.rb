@@ -16,6 +16,10 @@ class Piece
     moves.reject { |end_pos| move_into_check?(end_pos) }
   end
 
+  def has_move?(pos)
+    moves.include?(pos)
+  end
+
   def move_into_check?(end_pos)
     dup_board = board.dup
     dup_board.move_piece!(pos, end_pos)

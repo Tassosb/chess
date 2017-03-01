@@ -29,13 +29,9 @@ class Display
     (0..7).each do |row_i|
       (0..7).each do |col_i|
         pos = [row_i, col_i]
-        if pos == cursor_pos
-          display[row_i][col_i] << board[pos].to_s.colorize(:background => :blue)
-        elsif (row_i + col_i).odd?
-          display[row_i][col_i] << board[pos].to_s.colorize(:background => :white)
-        else
-          display[row_i][col_i] << board[pos].to_s.colorize(:background => :grey)
-        end
+        color = (row_i + col_i).odd? ? :white : :grey
+        color = :blue if pos == cursor_pos
+        display[row_i][col_i] << board[pos].to_s.colorize(background: color)
       end
     end
 
