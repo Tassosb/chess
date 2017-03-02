@@ -64,10 +64,10 @@ class Board
 
     grid.each_with_index do |row, i|
       row.each_with_index do |piece, j|
-        new_pos = [i, j]
         new_piece = piece.is_a?(NullPiece) ? piece :
           piece.class.new(piece.pos, piece.color, duped_board)
 
+        new_pos = [i, j]
         duped_board[new_pos] = new_piece
       end
     end
@@ -92,15 +92,6 @@ class Board
           pos = [row_idx, i]
           self[[row_idx, i]] = piece_type.new(pos, color, self)
         end
-        #
-        # self[[row_idx, 0]] = Rook.new([row_idx, 0], color, self)
-        # self[[row_idx, 1]] = Knight.new([row_idx, 1], color, self)
-        # self[[row_idx, 2]] = Bishop.new([row_idx, 2], color, self)
-        # self[[row_idx, 3]] = Queen.new([row_idx, 3], color, self)
-        # self[[row_idx, 4]] = King.new([row_idx, 4], color, self)
-        # self[[row_idx, 5]] = Bishop.new([row_idx, 5], color, self)
-        # self[[row_idx, 6]] = Knight.new([row_idx, 6], color, self)
-        # self[[row_idx, 7]] = Rook.new([row_idx, 7], color, self)
       when 1, 6
         8.times do |i|
           self[[row_idx, i]] = Pawn.new([row_idx, i], color, self)
