@@ -3,23 +3,15 @@ require_relative '../piece'
 class Pawn < Piece
   def moves
     possible_moves = []
-    forward_steps.each do |step|
+    (forward_steps + side_attacks).each do |step|
       d_x, d_y = step
       new_pos = [pos[0] + d_x, pos[1] + d_y]
 
       next unless board.in_bounds?(new_pos)
 
-      possible_moves << new_pos if board[new_pos].is_a?(NullPiece)
-    end
-
-    side_attacks.each do |attack|
-      d_x, d_y = attack
-      new_pos = [pos[0] + d_x, pos[1] + d_y]
-
-      next unless board.in_bounds?(new_pos)
-
-      possible_moves << new_pos unless board[new_pos].is_a?(NullPiece)
-
+      add_to_moves = !board[new_pos].is_a?(NullPiece)
+      add_to_moves = !add_to_moves if step[1].zero?
+      possible_moves << new_pos if add_to_moves
     end
 
     possible_moves
@@ -39,7 +31,6 @@ class Pawn < Piece
   def side_attacks
     color == :white ? [[-1, 1], [-1, -1]] : [[1, 1], [1, -1]]
   end
-
 
   def at_start_row?
     if color == :black
