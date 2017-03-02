@@ -1,4 +1,27 @@
 module SteppingPiece
+  DIRECTIONS = {
+    knight: [
+      [2, 1],
+      [1, 2],
+      [-2, 1],
+      [2, -1],
+      [-1, 2],
+      [-1, -2],
+      [-2, -1],
+      [1, -2]
+    ],
+    king: [
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+      [1, 1],
+      [1, -1],
+      [-1, 1],
+      [-1, -1]
+    ]
+  }
+
   def moves(piece_type)
     possible_moves = []
 
@@ -19,11 +42,11 @@ module SteppingPiece
   end
 
   def move_dirs(piece_type)
-    directions = {
-      knight: [[2, 1], [1, 2], [-2, 1], [2, -1], [-1, 2], [-1, -2], [-2, -1], [1, -2]],
-      king: [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]]
-    }
+    # directions = {
+    #   knight: [[2, 1], [1, 2], [-2, 1], [2, -1], [-1, 2], [-1, -2], [-2, -1], [1, -2]],
+    #   king: [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]]
+    # }
 
-    directions[piece_type]
+    DIRECTIONS[piece_type]
   end
 end
