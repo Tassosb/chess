@@ -65,11 +65,8 @@ class Board
     grid.each_with_index do |row, i|
       row.each_with_index do |piece, j|
         new_pos = [i, j]
-        new_piece = if piece.is_a?(NullPiece)
-                      piece
-                    else
-                      piece.class.new(piece.pos, piece.color, duped_board)
-                    end
+        new_piece = piece.is_a?(NullPiece) ? piece :
+          piece.class.new(piece.pos, piece.color, duped_board)
 
         duped_board[new_pos] = new_piece
       end
@@ -85,27 +82,31 @@ class Board
   private
 
   def setup_pieces
-    color = :black
     (0..7).each do |row_idx|
-      color = :white if row_idx > 5
+      color = row_idx > 5 ? :white : :black
       case row_idx
       when 0, 7
-        self[[row_idx, 0]] = Rook.new([row_idx, 0], color, self)
-        self[[row_idx, 1]] = Knight.new([row_idx, 1], color, self)
-        self[[row_idx, 2]] = Bishop.new([row_idx, 2], color, self)
-        self[[row_idx, 3]] = Queen.new([row_idx, 3], color, self)
-        self[[row_idx, 4]] = King.new([row_idx, 4], color, self)
-        self[[row_idx, 5]] = Bishop.new([row_idx, 5], color, self)
-        self[[row_idx, 6]] = Knight.new([row_idx, 6], color, self)
-        self[[row_idx, 7]] = Rook.new([row_idx, 7], color, self)
+        royal_pieces = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
+
+        royal_pieces.each_with_index do |piece_type, i|
+          pos = [row_idx, i]
+          self[[row_idx, i]] = piece_type.new(pos, color, self)
+        end
+        #
+        # self[[row_idx, 0]] = Rook.new([row_idx, 0], color, self)
+        # self[[row_idx, 1]] = Knight.new([row_idx, 1], color, self)
+        # self[[row_idx, 2]] = Bishop.new([row_idx, 2], color, self)
+        # self[[row_idx, 3]] = Queen.new([row_idx, 3], color, self)
+        # self[[row_idx, 4]] = King.new([row_idx, 4], color, self)
+        # self[[row_idx, 5]] = Bishop.new([row_idx, 5], color, self)
+        # self[[row_idx, 6]] = Knight.new([row_idx, 6], color, self)
+        # self[[row_idx, 7]] = Rook.new([row_idx, 7], color, self)
       when 1, 6
         8.times do |i|
           self[[row_idx, i]] = Pawn.new([row_idx, i], color, self)
         end
       else
-        8.times do |i|
-          self[[row_idx, i]] = NullPiece.instance
-        end
+        8.times { |i| self[[row_idx, i]] = NullPiece.instance }
       end
     end
   end
@@ -122,9 +123,3 @@ class Board
     raise MissingKingError, "The King has disappeared!"
   end
 end
-
-# board = Board.new()
-# duped_board = board.dup
-# # duped_board[[0,0]] = "CHANGED"
-# puts duped_board.object_id == board.object_id
-# puts duped_board[[0,1]].object_id == board[[0,1]].object_id
