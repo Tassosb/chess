@@ -42,11 +42,6 @@ module SteppingPiece
   end
 
   def move_dirs(piece_type)
-    # directions = {
-    #   knight: [[2, 1], [1, 2], [-2, 1], [2, -1], [-1, 2], [-1, -2], [-2, -1], [1, -2]],
-    #   king: [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]]
-    # }
-
     DIRECTIONS[piece_type]
   end
 end

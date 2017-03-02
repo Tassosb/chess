@@ -1,7 +1,6 @@
 module SlidingPiece
   def moves(available_dirs)
     possible_moves = []
-    # debugger
     deltas = move_dirs(available_dirs)
 
     deltas.each do |delta|
@@ -17,7 +16,7 @@ module SlidingPiece
         possible_moves << new_pos
       end
     end
-  
+
     possible_moves
   end
 
