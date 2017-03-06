@@ -12,7 +12,6 @@ class Player
 end
 
 class HumanPlayer < Player
-
   def play_turn
     [get_start_input, get_end_input]
   end
@@ -43,4 +42,11 @@ class HumanPlayer < Player
 
   end_input
   end
+end
+
+class ComputerPlayer < Player
+  def play_turn
+  end
+
+
 end

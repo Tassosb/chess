@@ -51,6 +51,7 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
+  
   puts "Enter Player 1 name"
   player1_name = gets.chomp
 
