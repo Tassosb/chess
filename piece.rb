@@ -16,6 +16,10 @@ class Piece
     moves.reject { |end_pos| move_into_check?(end_pos) }
   end
 
+  def can_move?
+    valid_moves.count > 0
+  end
+
   def has_move?(pos)
     moves.include?(pos)
   end

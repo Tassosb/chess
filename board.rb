@@ -55,7 +55,7 @@ class Board
     return false unless in_check?(color)
 
     grid.flatten.none? do |piece|
-      piece.color == color && piece.valid_moves.count > 0
+      piece.color == color && piece.can_move?
     end
   end
 
@@ -79,6 +79,14 @@ class Board
     self[pos].color == color
   end
 
+  def pieces
+    grid.flatten
+  end
+
+  def player_pieces_with_moves(color)
+    pieces.select { |piece| piece.color == color && piece.can_move? }
+  end
+
   private
 
   def setup_pieces
@@ -92,15 +100,6 @@ class Board
           pos = [row_idx, i]
           self[[row_idx, i]] = piece_type.new(pos, color, self)
         end
-        #
-        # self[[row_idx, 0]] = Rook.new([row_idx, 0], color, self)
-        # self[[row_idx, 1]] = Knight.new([row_idx, 1], color, self)
-        # self[[row_idx, 2]] = Bishop.new([row_idx, 2], color, self)
-        # self[[row_idx, 3]] = Queen.new([row_idx, 3], color, self)
-        # self[[row_idx, 4]] = King.new([row_idx, 4], color, self)
-        # self[[row_idx, 5]] = Bishop.new([row_idx, 5], color, self)
-        # self[[row_idx, 6]] = Knight.new([row_idx, 6], color, self)
-        # self[[row_idx, 7]] = Rook.new([row_idx, 7], color, self)
       when 1, 6
         8.times do |i|
           self[[row_idx, i]] = Pawn.new([row_idx, i], color, self)
