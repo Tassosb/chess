@@ -2,22 +2,21 @@ require_relative 'display'
 require_relative 'errors'
 
 class Player
-  attr_reader :name, :color, :display
+  attr_reader :name, :color
 
-  def initialize(name, color, display)
+  def initialize(name, color)
     @name = name
     @color = color
-    @display = display
   end
 end
 
 class HumanPlayer < Player
 
-  def play_turn
-    [get_start_input, get_end_input]
+  def play_turn(display)
+    [get_start_input(display), get_end_input(display)]
   end
 
-  def get_start_input
+  def get_start_input(display)
     start_input = nil
 
     until start_input
@@ -33,7 +32,7 @@ class HumanPlayer < Player
     start_input
   end
 
-  def get_end_input
+  def get_end_input(display)
     end_input = nil
 
     until end_input
@@ -42,5 +41,21 @@ class HumanPlayer < Player
     end
 
   end_input
+  end
+end
+
+class ComputerPlayer < Player
+
+  def play_turn(display)
+    board = display.board
+
+    piece = choose_piece(board)
+    start_pos = piece.pos
+    end_pos = piece.valid_moves.sample
+    [start_pos, end_pos]
+  end
+
+  def choose_piece(board)
+    board.player_pieces_with_moves(color).sample
   end
 end
