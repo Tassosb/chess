@@ -37,6 +37,7 @@ class Game
 
       board.move_piece(start_input, end_input)
     rescue InvalidMoveError => e
+      display.cursor.selected = false
       puts e.message
       sleep(1)
       retry

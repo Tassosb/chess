@@ -80,7 +80,7 @@ class Cursor
 
     return input
   end
-
+  
   def toggle_selected!
     self.selected = !selected
   end
