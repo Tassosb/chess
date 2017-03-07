@@ -1,3 +1,3 @@
 # Chess
 
-![alt text](https://drive.google.com/file/d/0B3RugDpit53oaUdCWGdjQWt4SFk/view?usp=sharing "Chess Screenshot")
+![alt text](https://www.dropbox.com/s/jjvk2dxgik4p12m/chess_screenshot.png?dl=0 "Chess Screenshot")
