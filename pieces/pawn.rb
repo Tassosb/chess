@@ -18,8 +18,9 @@ class Pawn < Piece
 
       next unless board.in_bounds?(new_pos)
 
-      possible_moves << new_pos unless board[new_pos].is_a?(NullPiece)
-
+      unless board[new_pos].is_a?(NullPiece) || board[new_pos].color == color
+        possible_moves << new_pos
+      end
     end
 
     possible_moves
