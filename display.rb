@@ -30,7 +30,9 @@ class Display
       (0..7).each do |col_i|
         pos = [row_i, col_i]
         color = (row_i + col_i).odd? ? :white : :grey
-        color = :blue if pos == cursor_pos
+        if pos == cursor_pos
+          color = cursor.selected? ? :yellow : :blue
+        end
         display[row_i][col_i] << board[pos].to_s.colorize(background: color)
       end
     end
