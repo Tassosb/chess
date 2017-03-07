@@ -29,7 +29,9 @@ class Game
     begin
       start_input, end_input = current_player.play_turn(display)
 
-      if board[start_input].move_into_check?(end_input)
+      if start_input == end_input
+        raise InvalidMoveError, "Not a valid Move."
+      elsif board[start_input].move_into_check?(end_input)
         raise InvalidMoveError, "You are in check."
       end
 
