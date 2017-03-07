@@ -1,6 +1,5 @@
 require 'byebug'
 
-
 class Piece
   attr_reader :color, :pos, :board
 
@@ -24,9 +23,23 @@ class Piece
     moves.include?(pos)
   end
 
+  def opposite_color
+    color == :white ? :black : :white
+  end
+
+  def attacking_moves
+    valid_moves.select do |move|
+      board[move].color == opposite_color
+    end
+  end
+
   def move_into_check?(end_pos)
     dup_board = board.dup
     dup_board.move_piece!(pos, end_pos)
     dup_board.in_check?(color)
+  end
+
+  def inspect
+    "pos: #{pos}, color: #{color}, type: #{self.class}"
   end
 end
