@@ -7,6 +7,10 @@ class NullPiece < Piece
   def initialize
   end
 
+  def color
+    nil
+  end
+
   def to_s
     "   "
   end

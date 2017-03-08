@@ -7,11 +7,11 @@ require 'byebug'
 class Game
   attr_reader :board, :display, :player1, :player2, :current_player
 
-  def initialize(name1, name2)
+  def initialize(player1, player2)
     @board = Board.new
     @display = Display.new(board)
-    @player1 = HumanPlayer.new(name1, :white, display)
-    @player2 = HumanPlayer.new(name2, :black, display)
+    @player1 = player1
+    @player2 = player2
     @current_player = player1
   end
 
@@ -27,14 +27,17 @@ class Game
 
   def take_turn
     begin
-      start_input, end_input = current_player.play_turn
+      start_input, end_input = current_player.play_turn(display)
 
-      if board[start_input].move_into_check?(end_input)
+      if start_input == end_input
+        raise InvalidMoveError, "Not a valid Move."
+      elsif board[start_input].move_into_check?(end_input)
         raise InvalidMoveError, "You are in check."
       end
 
       board.move_piece(start_input, end_input)
     rescue InvalidMoveError => e
+      display.cursor.selected = false
       puts e.message
       sleep(1)
       retry
@@ -51,13 +54,21 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-  
+  puts "Enter number of players. (1 or 2)"
+  num_players = Integer(gets.chomp)
+
   puts "Enter Player 1 name"
   player1_name = gets.chomp
+  player1 = HumanPlayer.new(player1_name, :white)
 
-  puts "Enter Player 2 name"
-  player2_name = gets.chomp
+  if num_players == 2
+    puts "Enter Player 2 name"
+    player2_name = gets.chomp
+    player2 = HumanPlayer.new(player2_name, :black)
+  else
+    player2 = ComputerPlayer.new("AI", :black)
+  end
 
-  game = Game.new(player1_name, player2_name)
+  game = Game.new(player1, player2)
   game.play
 end

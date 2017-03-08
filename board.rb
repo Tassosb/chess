@@ -45,7 +45,7 @@ class Board
   end
 
   def in_check?(color)
-    grid.flatten.any? do |piece|
+    pieces.any? do |piece|
       next if piece.color == color || piece.is_a?(NullPiece)
       piece.has_move?(find_king_pos(color))
     end
@@ -54,9 +54,7 @@ class Board
   def checkmate?(color)
     return false unless in_check?(color)
 
-    grid.flatten.none? do |piece|
-      piece.color == color && piece.valid_moves.count > 0
-    end
+    player_pieces_with_moves(color).empty?
   end
 
   def dup
@@ -77,6 +75,14 @@ class Board
 
   def matches_color?(pos, color)
     self[pos].color == color
+  end
+
+  def pieces
+    grid.flatten
+  end
+
+  def player_pieces_with_moves(color)
+    pieces.select { |piece| piece.color == color && piece.can_move? }
   end
 
   private

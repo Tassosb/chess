@@ -32,7 +32,7 @@ module SteppingPiece
       new_pos = [pos[0] + d_x, pos[1] + d_y]
 
       if board.in_bounds?(new_pos)
-        if board[new_pos].is_a?(NullPiece) || board[new_pos].color != self.color
+        if board[new_pos].color != color
           possible_moves << new_pos
         end
       end

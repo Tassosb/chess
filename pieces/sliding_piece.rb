@@ -1,6 +1,7 @@
 module SlidingPiece
   def moves(available_dirs)
     possible_moves = []
+
     deltas = move_dirs(available_dirs)
 
     deltas.each do |delta|
