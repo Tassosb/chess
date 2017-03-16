@@ -7,6 +7,3 @@ A command-line chess game offering a basic AI to play against.
 To play:
 1. Clone the repo.
 2. Run `ruby game.rb`
-
-Dependencies:
-- Ruby
